@@ -3,99 +3,523 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TR's Mewtwo ex - Premium Tracker</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Team Rocket Deck Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap');
-        body { 
-            background-color: #0f172a;
-            background-image: radial-gradient(#4c1d95 1px, transparent 1px);
-            background-size: 20px 20px;
-            font-family: 'Nunito', sans-serif; 
-            color: #f8fafc;
+        :root {
+            --red: #e8000d;
+            --red-dark: #8b0000;
+            --red-glow: rgba(232,0,13,0.4);
+            -A-black: #080808;
+            --black2: #111111;
+            --black3: #1a1a1a;
+            --gray: #2a2a2a;
+            --gray2: #3a3a3a;
+            --white: #f0e8d8;
+            --white2: #c8c0b0;
+            --gold: #c8960c;
+            --gold-light: #f0b800;
         }
-        .deck-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .deck-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px -5px rgba(147, 51, 234, 0.4); }
-        .glass-panel { background: rgba(30, 41, 59, 0.85); backdrop-filter: blur(10px); }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-        /* --- Animación de la Moneda 3D --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: var(--black);
+            font-family: 'Rajdhani', sans-serif;
+            color: var(--white);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.08) 2px,rgba(0,0,0,0.08) 4px);
+            pointer-events: none;
+            z-index: 9999;
+        }
+        .bg-stripes {
+            position: fixed;
+            inset: 0;
+            background-image: repeating-linear-gradient(-45deg,transparent,transparent 40px,rgba(232,0,13,0.015) 40px,rgba(232,0,13,0.015) 80px);
+            pointer-events: none;
+            z-index: 0;
+        }
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--black);
+            border-bottom: 3px solid var(--red);
+            box-shadow: 0 4px 30px rgba(232,0,13,0.3);
+        }
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+            gap: 16px;
+        }
+        .logo-area { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
+        .tr-emblem { width: 52px; height: 52px; position: relative; flex-shrink: 0; }
+        .title-block h1 { font-family: 'Bebas Neue', sans-serif; font-size: 1.9rem; letter-spacing: 3px; line-height: 1; color: var(--white); }
+        .title-block h1 span { color: var(--red); }
+        .title-block p { font-family: 'Share Tech Mono', monospace; font-size: 0.6rem; color: var(--red); letter-spacing: 4px; text-transform: uppercase; }
+        .header-tools { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }
+        .tool-btn {
+            background: var(--black3);
+            border: 1px solid var(--gray2);
+            color: var(--white2);
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+            padding: 6px 14px;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: all 0.2s;
+            clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+        }
+        .tool-btn:hover { background: var(--red-dark); border-color: var(--red); color: white; box-shadow: 0 0 15px var(--red-glow); }
+        .timer-widget { display: flex; align-items: center; gap: 6px; background: var(--black3); border: 1px solid var(--red-dark); padding: 6px 10px; clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%); }
+        #timer-display { font-family: 'Share Tech Mono', monospace; font-size: 1.2rem; color: var(--red); width: 60px; text-align: center; letter-spacing: 2px; }
+        .timer-btn { background: none; border: 1px solid var(--gray2); color: var(--white2); width: 26px; height: 26px; cursor: pointer; font-size: 0.75rem; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+        .timer-btn:hover { border-color: var(--red); color: var(--red); }
+        main { max-width: 1200px; margin: 0 auto; padding: 28px 20px; display: grid; grid-template-columns: 340px 1fr; gap: 24px; position: relative; z-index: 1; }
+        @media (max-width: 900px) { main { grid-template-columns: 1fr; } }
+        .panel { background: var(--black2); border: 1px solid var(--gray2); border-top: 3px solid var(--red); padding: 22px; position: relative; margin-bottom: 20px; }
+        .panel::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg,transparent,var(--red),transparent); }
+        .panel-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 3px; color: var(--white); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+        .panel-title .icon { color: var(--red); font-size: 1rem; }
+        .panel-title::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg,var(--gray2),transparent); margin-left: 8px; }
+        .op-badge { display: inline-block; background: var(--red-dark); border: 1px solid var(--red); color: white; font-family: 'Share Tech Mono', monospace; font-size: 0.6rem; padding: 3px 10px; letter-spacing: 3px; margin-bottom: 14px; }
+        label.field-label { display: block; font-size: 0.75rem; font-weight: 700; letter-spacing: 2px; color: var(--white2); margin-bottom: 6px; text-transform: uppercase; }
+        select, input[type="text"] { width: 100%; background: var(--black3); border: 1px solid var(--gray2); border-bottom: 2px solid var(--red-dark); color: var(--white); font-family: 'Rajdhani', sans-serif; font-weight: 600; font-size: 0.95rem; padding: 9px 12px; outline: none; transition: all 0.2s; appearance: none; -webkit-appearance: none; }
+        select:focus, input[type="text"]:focus { border-color: var(--red); box-shadow: 0 2px 15px rgba(232,0,13,0.2); }
+        .field-group { margin-bottom: 14px; }
+        .turn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .turn-btn { background: var(--black3); border: 1px solid var(--gray2); color: var(--white2); font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 2px; padding: 10px; cursor: pointer; transition: all 0.2s; clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%); }
+        .turn-btn.active { background: var(--red); border-color: var(--red); color: white; box-shadow: 0 0 20px var(--red-glow); }
+        .turn-btn:not(.active):hover { border-color: var(--red-dark); color: var(--white); }
+        .result-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 6px; }
+        .result-btn { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 3px; padding: 14px 8px; cursor: pointer; border: 1px solid; transition: all 0.25s; background: var(--black3); clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%); }
+        .result-btn.win { border-color: #2a6e2a; color: #4caf50; }
+        .result-btn.win:hover { background: #1a3d1a; box-shadow: 0 0 20px rgba(76,175,80,0.3); color: #81c784; }
+        .result-btn.loss { border-color: var(--red-dark); color: var(--red); }
+        .result-btn.loss:hover { background: #2a0808; box-shadow: 0 0 20px var(--red-glow); color: #ff5555; }
+        .result-btn.tie { border-color: #555; color: #888; }
+        .result-btn.tie:hover { background: #1e1e1e; color: #aaa; }
+        .stats-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+        .stat-box { background: var(--black3); border: 1px solid var(--gray); padding: 12px 8px; text-align: center; position: relative; overflow: hidden; }
+        .stat-box::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; }
+        .stat-box.wins::after { background: #4caf50; }
+        .stat-box.losses::after { background: var(--red); }
+        .stat-box.ties::after { background: #666; }
+        .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; line-height: 1; display: block; }
+        .stat-box.wins .stat-num { color: #4caf50; }
+        .stat-box.losses .stat-num { color: var(--red); }
+        .stat-box.ties .stat-num { color: #888; }
+        .stat-label { font-size: 0.65rem; letter-spacing: 2px; font-weight: 700; color: var(--white2); text-transform: uppercase; }
+        .stat-row-single { background: var(--black3); border: 1px solid var(--gray); border-left: 3px solid var(--red); padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .stat-row-single .label { font-size: 0.75rem; letter-spacing: 2px; font-weight: 700; color: var(--white2); text-transform: uppercase; }
+        .stat-row-single .value { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; color: var(--red); letter-spacing: 2px; }
+        .matchup-item { display: flex; align-items: center; justify-content: space-between; background: var(--black3); border: 1px solid var(--gray); padding: 8px 12px; margin-bottom: 6px; transition: border-color 0.2s; }
+        .matchup-item:hover { border-color: var(--red-dark); }
+        .matchup-name { font-size: 0.9rem; font-weight: 700; color: var(--white); max-width: 130px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .matchup-record { display: flex; gap: 8px; align-items: center; font-family: 'Share Tech Mono', monospace; font-size: 0.75rem; }
+        .mu-w { color: #4caf50; } .mu-l { color: var(--red); } .mu-t { color: #888; }
+        .mu-pct { font-weight: 700; font-size: 0.85rem; }
+        .mu-high { color: #4caf50; } .mu-mid { color: var(--gold-light); } .mu-low { color: var(--red); }
+        .history-scroll { max-height: 460px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--red-dark) var(--black3); }
+        .history-scroll::-webkit-scrollbar { width: 4px; }
+        .history-scroll::-webkit-scrollbar-track { background: var(--black3); }
+        .history-scroll::-webkit-scrollbar-thumb { background: var(--red-dark); }
+        .match-entry { display: flex; align-items: center; gap: 12px; background: var(--black3); border: 1px solid var(--gray); border-left: 4px solid; padding: 10px 14px; margin-bottom: 6px; transition: all 0.2s; }
+        .match-entry:hover { transform: translateX(2px); }
+        .match-entry.win { border-left-color: #4caf50; }
+        .match-entry.loss { border-left-color: var(--red); }
+        .match-entry.tie { border-left-color: #555; }
+        .match-result { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 2px; width: 52px; text-align: center; flex-shrink: 0; line-height: 1.3; }
+        .match-entry.win .match-result { color: #4caf50; }
+        .match-entry.loss .match-result { color: var(--red); }
+        .match-entry.tie .match-result { color: #888; }
+        .match-info { flex: 1; }
+        .match-opp { font-size: 0.95rem; font-weight: 700; color: var(--white); }
+        .match-meta { font-size: 0.72rem; color: #888; font-family: 'Share Tech Mono', monospace; margin-top: 2px; }
+        .match-notes-text { font-size: 0.72rem; color: var(--gold); font-style: italic; margin-top: 1px; }
+        .delete-btn { background: none; border: none; color: #444; cursor: pointer; font-size: 1rem; padding: 4px; transition: color 0.2s; flex-shrink: 0; }
+        .delete-btn:hover { color: var(--red); }
+        .deck-sections { display: flex; flex-direction: column; gap: 16px; }
+        .deck-section-title { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 3px; padding: 4px 0; border-bottom: 1px solid var(--gray2); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+        .deck-section-title .dot { width: 8px; height: 8px; border-radius: 50%; }
+        .pokemon-dot { background: #9c27b0; } .trainer-dot { background: #1976d2; } .energy-dot { background: var(--gold); }
+        .deck-cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 6px; }
+        .deck-card-item { background: var(--black3); border: 1px solid var(--gray); padding: 8px 10px; display: flex; align-items: center; justify-content: space-between; transition: all 0.2s; cursor: default; }
+        .deck-card-item:hover { border-color: var(--red-dark); background: #1e1010; }
+        .card-name { font-size: 0.8rem; font-weight: 600; color: var(--white2); line-height: 1.3; }
+        .deck-card-item:hover .card-name { color: var(--white); }
+        .card-qty { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; color: var(--red); flex-shrink: 0; margin-left: 6px; }
+        .card-en { font-size: 0.65rem; color: #666; font-style: italic; margin-top: 1px; }
+        .ace-spec { border-color: var(--gold-light) !important; }
+        .ace-spec .card-qty { color: var(--gold-light) !important; }
+        .ace-spec .card-name { color: var(--gold-light) !important; }
+        .section-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .clear-btn { font-family: 'Share Tech Mono', monospace; font-size: 0.65rem; color: #555; background: none; border: 1px solid #333; padding: 4px 10px; cursor: pointer; letter-spacing: 1px; transition: all 0.2s; }
+        .clear-btn:hover { border-color: var(--red); color: var(--red); }
+        .modal-overlay { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.85); backdrop-filter: blur(4px); align-items: center; justify-content: center; }
+        .modal-overlay.open { display: flex; }
+        .modal-box { background: var(--black2); border: 1px solid var(--gray2); border-top: 3px solid var(--red); padding: 32px; min-width: 280px; display: flex; flex-direction: column; align-items: center; gap: 20px; box-shadow: 0 0 60px rgba(232,0,13,0.2); }
+        .modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 4px; color: var(--white); }
+        .modal-close { background: var(--red); border: none; color: white; font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: 3px; padding: 10px 30px; cursor: pointer; clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%); transition: all 0.2s; }
+        .modal-close:hover { background: #ff1a1a; box-shadow: 0 0 20px var(--red-glow); }
         .perspective-1000 { perspective: 1000px; }
-        .coin { width: 120px; height: 120px; transform-style: preserve-3d; transition: transform 2s cubic-bezier(0.4, 2, 0.2, 0.8); }
-        .coin-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 4rem; font-weight: 900; box-shadow: inset 0 0 15px rgba(0,0,0,0.8); }
-        .coin-front { background: radial-gradient(#dc2626, #7f1d1d); color: white; border: 6px solid #f87171; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-        .coin-back { background: radial-gradient(#1f2937, #030712); color: #9ca3af; transform: rotateY(180deg); border: 6px solid #4b5563; }
-
-        /* --- Animación del Dado 3D --- */
-        .dice-container { perspective: 1000px; margin: 20px; }
+        .coin { width: 110px; height: 110px; transform-style: preserve-3d; transition: transform 2s cubic-bezier(0.4, 2, 0.2, 0.8); }
+        .coin-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 2px; box-shadow: inset 0 0 15px rgba(0,0,0,0.8); }
+        .coin-front { background: radial-gradient(circle, #c0392b, #5a0000); color: white; border: 5px solid var(--red); }
+        .coin-back { background: radial-gradient(circle, #1a1a1a, #000); color: #555; transform: rotateY(180deg); border: 5px solid #333; }
+        .coin-result { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 4px; min-height: 40px; color: var(--white); }
+        .dice-container { perspective: 1000px; }
         .dice { width: 80px; height: 80px; transform-style: preserve-3d; transition: transform 1.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
-        .dice-face { position: absolute; width: 100%; height: 100%; background: #1e293b; border: 3px solid #ef4444; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: white; font-weight: bold; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
+        .dice-face { position: absolute; width: 100%; height: 100%; background: var(--black3); border: 2px solid var(--red); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: white; box-shadow: inset 0 0 10px rgba(0,0,0,0.6); }
         .front  { transform: rotateY(  0deg) translateZ(40px); }
         .back   { transform: rotateY(180deg) translateZ(40px); }
         .right  { transform: rotateY( 90deg) translateZ(40px); }
         .left   { transform: rotateY(-90deg) translateZ(40px); }
         .top    { transform: rotateX( 90deg) translateZ(40px); }
         .bottom { transform: rotateX(-90deg) translateZ(40px); }
+        .dice-result { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 4px; min-height: 36px; color: var(--white); }
+        .no-scroll::-webkit-scrollbar { display: none; }
+        .no-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+        .count-badge { font-family: 'Share Tech Mono', monospace; font-size: 0.65rem; background: var(--red-dark); color: var(--white); padding: 1px 7px; letter-spacing: 1px; }
+        @keyframes flicker { 0%, 95%, 100% { opacity: 1; } 96% { opacity: 0.8; } 97% { opacity: 1; } 98% { opacity: 0.6; } }
+        .flicker { animation: flicker 8s infinite; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .new-entry { animation: slideDown 0.3s ease; }
+        .empty-state { text-align: center; padding: 30px 0; font-family: 'Share Tech Mono', monospace; font-size: 0.75rem; color: #444; letter-spacing: 2px; line-height: 2; }
     </style>
 </head>
-<body class="pb-12">
+<body>
+<div class="bg-stripes"></div>
 
-    <header class="bg-gradient-to-r from-gray-900 via-purple-950 to-gray-900 text-white p-4 shadow-[0_4px_20px_rgba(220,38,38,0.2)] sticky top-0 z-40 border-b-4 border-red-600">
-        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-4">
-                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png" alt="Mewtwo" class="w-12 h-12 drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]">
-                <h1 class="text-2xl font-black tracking-wide text-purple-100">Team Rocket's <span class="text-red-500 font-black">Mewtwo ex</span></h1>
+<header>
+    <div class="header-inner">
+        <div class="logo-area">
+            <svg class="tr-emblem flicker" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="47" fill="#0a0a0a" stroke="#e8000d" stroke-width="3"/>
+                <circle cx="50" cy="50" r="42" fill="none" stroke="#3a0000" stroke-width="1"/>
+                <text x="50" y="72" font-family="Arial Black,Impact,sans-serif" font-size="72" font-weight="900" fill="white" text-anchor="middle">R</text>
+                <line x1="14" y1="80" x2="86" y2="20" stroke="#e8000d" stroke-width="7" stroke-linecap="round"/>
+                <line x1="14" y1="80" x2="86" y2="20" stroke="rgba(232,0,13,0.3)" stroke-width="14" stroke-linecap="round"/>
+            </svg>
+            <div class="title-block">
+                <h1><span>TEAM ROCKET</span> DECK</h1>
+                <p>Operation: Darkness &nbsp;·&nbsp; Classified</p>
             </div>
-            
-            <div class="flex flex-wrap justify-center items-center gap-2 md:gap-4">
-                <div class="flex gap-2 bg-black/40 p-1 rounded-lg backdrop-blur-sm border border-purple-900/50">
-                    <button onclick="animateCoin()" class="hover:bg-purple-900/50 px-3 py-1 rounded text-sm font-bold transition-colors text-purple-200">🪙 Tirar Moneda</button>
-                    <button onclick="animateDice()" class="hover:bg-purple-900/50 px-3 py-1 rounded text-sm font-bold transition-colors border-l border-purple-900/50 text-purple-200">🎲 Lanzar Dado</button>
-                </div>
+        </div>
+        <div class="header-tools">
+            <button class="tool-btn" onclick="openModal('coin-modal')">🪙 MONEDA</button>
+            <button class="tool-btn" onclick="openModal('dice-modal')">🎲 DADO</button>
+            <div class="timer-widget">
+                <span id="timer-display">50:00</span>
+                <button class="timer-btn" onclick="startTimer()">▶</button>
+                <button class="timer-btn" onclick="pauseTimer()">⏸</button>
+                <button class="timer-btn" onclick="resetTimer()">⏹</button>
+            </div>
+        </div>
+    </div>
+</header>
 
-                <div class="flex items-center gap-2 bg-black/60 p-2 rounded-xl border border-red-900/50 backdrop-blur-sm shadow-inner">
-                    <span class="text-xl font-mono font-bold w-16 text-center text-red-400" id="timer-display">50:00</span>
-                    <button onclick="startTimer()" class="bg-green-600 hover:bg-green-500 text-white px-2 py-1 rounded text-sm font-bold shadow">▶</button>
-                    <button onclick="pauseTimer()" class="bg-yellow-600 hover:bg-yellow-500 text-white px-2 py-1 rounded text-sm font-bold shadow">⏸</button>
-                    <button onclick="resetTimer()" class="bg-red-600 hover:bg-red-500 text-white px-2 py-1 rounded text-sm font-bold shadow">⏹</button>
+<!-- COIN MODAL -->
+<div class="modal-overlay" id="coin-modal">
+    <div class="modal-box">
+        <div class="modal-title">— TIRADA DE MONEDA —</div>
+        <div class="perspective-1000">
+            <div class="coin" id="coin-el">
+                <div class="coin-face coin-front">CARA</div>
+                <div class="coin-face coin-back">CRUZ</div>
+            </div>
+        </div>
+        <div class="coin-result" id="coin-result"></div>
+        <button class="modal-close" onclick="closeModal('coin-modal')">CERRAR</button>
+    </div>
+</div>
+
+<!-- DICE MODAL -->
+<div class="modal-overlay" id="dice-modal">
+    <div class="modal-box">
+        <div class="modal-title">— LANZAR DADO —</div>
+        <div class="dice-container">
+            <div class="dice" id="dice-el">
+                <div class="dice-face front">1</div>
+                <div class="dice-face back">6</div>
+                <div class="dice-face right">2</div>
+                <div class="dice-face left">5</div>
+                <div class="dice-face top">3</div>
+                <div class="dice-face bottom">4</div>
+            </div>
+        </div>
+        <div class="dice-result" id="dice-result"></div>
+        <button class="modal-close" onclick="closeModal('dice-modal')">CERRAR</button>
+    </div>
+</div>
+
+<main>
+    <!-- LEFT COLUMN -->
+    <div>
+        <div class="panel">
+            <div class="op-badge">■ OPERACIÓN: REGISTRAR MISIÓN ■</div>
+            <div class="panel-title"><span class="icon">◈</span> NUEVA PARTIDA</div>
+            <div class="field-group">
+                <label class="field-label">Mazo Rival</label>
+                <select id="opp-deck"></select>
+            </div>
+            <div class="field-group">
+                <label class="field-label">¿Quién empezó?</label>
+                <div class="turn-grid">
+                    <button id="btn-turn-1" class="turn-btn active" onclick="setTurn(1)">1º TURNO</button>
+                    <button id="btn-turn-2" class="turn-btn" onclick="setTurn(2)">2º TURNO</button>
+                </div>
+            </div>
+            <div class="field-group">
+                <label class="field-label">Notas de Campo</label>
+                <input type="text" id="match-notes" placeholder="Ej: mano inicial lenta...">
+            </div>
+            <label class="field-label">Resultado</label>
+            <div class="result-grid">
+                <button class="result-btn win" onclick="addMatch('W')">WIN</button>
+                <button class="result-btn loss" onclick="addMatch('L')">LOSS</button>
+                <button class="result-btn tie" onclick="addMatch('T')">TIE</button>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-title"><span class="icon">◈</span> ESTADÍSTICAS</div>
+            <div class="stats-row">
+                <div class="stat-box wins"><span class="stat-num" id="stat-wins">0</span><span class="stat-label">Wins</span></div>
+                <div class="stat-box losses"><span class="stat-num" id="stat-losses">0</span><span class="stat-label">Losses</span></div>
+                <div class="stat-box ties"><span class="stat-num" id="stat-ties">0</span><span class="stat-label">Ties</span></div>
+            </div>
+            <div class="stat-row-single"><span class="label">Win Rate</span><span class="value" id="stat-winrate">—</span></div>
+            <div class="stat-row-single"><span class="label">Total Partidas</span><span class="value" id="stat-total">0</span></div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-title"><span class="icon">◈</span> MATCHUPS</div>
+            <div id="matchup-stats" class="no-scroll" style="max-height:240px;overflow-y:auto;">
+                <div class="empty-state">// SIN DATOS //</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div>
+        <div class="panel">
+            <div class="section-header-row">
+                <div class="panel-title" style="margin-bottom:0"><span class="icon">◈</span> HISTORIAL <span class="count-badge" id="history-count">0</span></div>
+                <button class="clear-btn" onclick="clearHistory()">⊗ BORRAR TODO</button>
+            </div>
+            <div class="history-scroll" id="match-history">
+                <div class="empty-state">// NINGUNA MISIÓN REGISTRADA //<br>REGISTRA TU PRIMERA PARTIDA</div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-title"><span class="icon">◈</span> LISTA DEL MAZO <span class="count-badge">60</span></div>
+            <div class="deck-sections">
+                <div>
+                    <div class="deck-section-title"><span class="dot pokemon-dot"></span> POKÉMON <span style="color:#9c27b0;font-size:0.8rem;margin-left:4px">12</span></div>
+                    <div class="deck-cards-grid" id="deck-pokemon"></div>
+                </div>
+                <div>
+                    <div class="deck-section-title"><span class="dot trainer-dot"></span> ENTRENADOR <span style="color:#1976d2;font-size:0.8rem;margin-left:4px">40</span></div>
+                    <div class="deck-cards-grid" id="deck-trainer"></div>
+                </div>
+                <div>
+                    <div class="deck-section-title"><span class="dot energy-dot"></span> ENERGÍA <span style="color:var(--gold);font-size:0.8rem;margin-left:4px">8</span></div>
+                    <div class="deck-cards-grid" id="deck-energy"></div>
                 </div>
             </div>
         </div>
-    </header>
+    </div>
+</main>
 
-    <main class="max-w-6xl mx-auto p-4 mt-6 grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-        <div class="lg:col-span-1 flex flex-col gap-6">
-            
-            <div class="glass-panel p-6 rounded-2xl shadow-xl border border-purple-900/50">
-                <div class="bg-red-900/80 border border-red-500 text-red-100 text-xs font-black px-3 py-1 rounded-full w-fit mb-4 tracking-widest">MI MAZO: TR's MEWTWO</div>
-                <h2 class="text-2xl font-black mb-4 text-purple-300">Nueva Partida</h2>
-                
-                <div class="mb-4">
-                    <label class="block text-sm font-bold mb-1 text-purple-200">¿Contra qué jugaste?</label>
-                    <select id="opp-deck" class="w-full border-2 border-purple-800 rounded-xl p-2 bg-gray-900 font-bold text-white focus:outline-none focus:border-red-500 transition-colors"></select>
-                </div>
+<script>
+const DECK = {
+    pokemon: [
+        { qty:2, es:"Porygon del Team Rocket",    en:"Team Rocket's Porygon",    code:"DRI-153" },
+        { qty:3, es:"Honchkrow del Team Rocket",  en:"Team Rocket's Honchkrow",  code:"ASC-127" },
+        { qty:3, es:"Murkrow del Team Rocket",    en:"Team Rocket's Murkrow",    code:"ASC-126" },
+        { qty:1, es:"Murkrow del Team Rocket",    en:"Team Rocket's Murkrow",    code:"DRI-127" },
+        { qty:1, es:"Porygon-Z del Team Rocket",  en:"Team Rocket's Porygon-Z",  code:"DRI-155" },
+        { qty:1, es:"Porygon-Z del Team Rocket",  en:"Team Rocket's Porygon-Z",  code:"DRI-155 EN" },
+        { qty:1, es:"Articuluno del Team Rocket", en:"Team Rocket's Articuno",   code:"DRI-51"  },
+    ],
+    trainer: [
+        { qty:4, es:"Atlas del Team Rocket",         en:"Team Rocket's Archer",      acespec:false },
+        { qty:4, es:"Giovanni del Team Rocket",      en:"Team Rocket's Giovanni",    acespec:false },
+        { qty:3, es:"Atenea del Team Rocket",        en:"Team Rocket's Ariana",      acespec:false },
+        { qty:1, es:"Atenea del Team Rocket",        en:"Team Rocket's Ariana (EN)", acespec:false },
+        { qty:4, es:"Fábrica del Team Rocket",       en:"Team Rocket's Factory",     acespec:false },
+        { qty:2, es:"Camilla Nocturna",              en:"Night Stretcher",           acespec:false },
+        { qty:3, es:"Protón del Team Rocket",        en:"Team Rocket's Proton",      acespec:false },
+        { qty:1, es:"Protón del Team Rocket",        en:"Team Rocket's Proton (EN)", acespec:false },
+        { qty:4, es:"Roto-Stick",                    en:"Roto-Stick",                acespec:false },
+        { qty:4, es:"Petrel del Team Rocket",        en:"Team Rocket's Petrel",      acespec:false },
+        { qty:4, es:"Walkie-talkie del TR",          en:"Team Rocket's Transceiver", acespec:false },
+        { qty:3, es:"Pokétableta",                   en:"Poke Pad",                  acespec:false },
+        { qty:1, es:"Miracle Headset",               en:"Miracle Headset",           acespec:true  },
+        { qty:2, es:"Ultra Ball",                    en:"Ultra Ball",                acespec:false },
+    ],
+    energy: [
+        { qty:4, es:"Energía Ignición",         en:"Ignition Energy (Special)",       code:"" },
+        { qty:1, es:"Energía del Team Rocket",  en:"Team Rocket's Energy (Special)",  code:"ES" },
+        { qty:3, es:"Energía del Team Rocket",  en:"Team Rocket's Energy (Special)",  code:"EN" },
+    ]
+};
 
-                <div class="mb-4">
-                    <label class="block text-sm font-bold mb-1 text-purple-200">¿Quién empezó?</label>
-                    <div class="grid grid-cols-2 gap-2">
-                        <button id="btn-turn-1" onclick="setTurn(1)" class="py-2 rounded-xl border-2 border-red-600 bg-red-600 text-white font-black transition-colors shadow-[0_0_10px_rgba(220,38,38,0.3)]">Fui 1º</button>
-                        <button id="btn-turn-2" onclick="setTurn(2)" class="py-2 rounded-xl border-2 border-purple-800 bg-gray-900 text-purple-400 font-bold transition-colors">Fui 2º</button>
-                    </div>
-                </div>
+const OPPONENTS = [
+    "Charizard ex","Gardevoir ex","Regidrago VSTAR","Lost Box","Lugia VSTAR",
+    "Miraidon ex","Chien-Pao ex","Roaring Moon ex","Iron Valiant ex",
+    "Arceus VSTAR","Giratina VSTAR","Palkia VSTAR","Mew VMAX",
+    "Rapid Strike Urshifu","Single Strike Urshifu","Raichu V","Mewtwo ex",
+    "Pikachu ex","Snorlax Stall","Pidgeot Control","Otro"
+];
 
-                <div class="mb-4">
-                    <label class="block text-sm font-bold mb-1 text-purple-200">Notas (Opcional)</label>
-                    <input type="text" id="match-notes" placeholder="Ej: No robé energías oscuras..." class="w-full border-2 border-purple-800 rounded-xl p-2 bg-gray-900 text-white text-sm focus:outline-none focus:border-red-500 transition-colors placeholder-gray-500">
-                </div>
+let matches = JSON.parse(localStorage.getItem('tr-matches-v2') || '[]');
+let turn = 1;
 
-                <label class="block text-sm font-bold mb-1 text-purple-200">Resultado Final</label>
-                <div class="grid grid-cols-3 gap-2">
-                    <button onclick="addMatch('W')" class="bg-green-900/40 hover:bg-green-600 hover:text-white border border-green-700 text-green-400 font-black text-lg py-3 rounded-xl transition-all shadow-sm">WIN</button>
-                    <button onclick="addMatch('L')" class="bg-red-900/40 hover:bg-red-600 hover:text-white border border-red-700 text-red-400 font-black text-lg py-3 rounded-xl transition-all shadow-sm">LOSS</button>
-                    <button onclick="addMatch('T')" class="bg-gray-800 hover:bg-gray-600 hover:text-white border border-gray-600 text-gray-400 font-black text-lg py-3 rounded-xl transition-all shadow-sm">TIE</button>
-                </div>
+function init() {
+    const sel = document.getElementById('opp-deck');
+    OPPONENTS.forEach(d => {
+        const o = document.createElement('option');
+        o.value = d; o.textContent = d; sel.appendChild(o);
+    });
+    renderDeckList(); renderHistory(); updateStats();
+}
+
+function setTurn(t) {
+    turn = t;
+    document.getElementById('btn-turn-1').className = 'turn-btn' + (t===1?' active':'');
+    document.getElementById('btn-turn-2').className = 'turn-btn' + (t===2?' active':'');
+}
+
+function addMatch(result) {
+    const opp = document.getElementById('opp-deck').value;
+    const notes = document.getElementById('match-notes').value.trim();
+    matches.unshift({ id:Date.now(), result, opponent:opp, turn, notes, date:new Date().toLocaleDateString('es-ES') });
+    localStorage.setItem('tr-matches-v2', JSON.stringify(matches));
+    document.getElementById('match-notes').value = '';
+    renderHistory(); updateStats();
+}
+
+function renderHistory() {
+    const c = document.getElementById('match-history');
+    document.getElementById('history-count').textContent = matches.length;
+    if (!matches.length) { c.innerHTML = '<div class="empty-state">// NINGUNA MISIÓN REGISTRADA //<br>REGISTRA TU PRIMERA PARTIDA</div>'; return; }
+    const icons = { W:'🏆', L:'💀', T:'🤝' };
+    c.innerHTML = matches.map(m => `
+        <div class="match-entry ${m.result==='W'?'win':m.result==='L'?'loss':'tie'} new-entry">
+            <div class="match-result">${icons[m.result]}<br>${m.result}</div>
+            <div class="match-info">
+                <div class="match-opp">vs ${m.opponent}</div>
+                <div class="match-meta">${m.date} &nbsp;·&nbsp; ${m.turn===1?'1º turno':'2º turno'}</div>
+                ${m.notes ? `<div class="match-notes-text">"${m.notes}"</div>` : ''}
             </div>
+            <button class="delete-btn" onclick="deleteMatch(${m.id})">✕</button>
+        </div>`).join('');
+}
 
-... (410 líneas restantes)
+function deleteMatch(id) {
+    matches = matches.filter(m => m.id !== id);
+    localStorage.setItem('tr-matches-v2', JSON.stringify(matches));
+    renderHistory(); updateStats();
+}
+
+function clearHistory() {
+    if (confirm('¿Borrar todo el historial de partidas?')) {
+        matches = [];
+        localStorage.setItem('tr-matches-v2', JSON.stringify(matches));
+        renderHistory(); updateStats();
+    }
+}
+
+function updateStats() {
+    const w=matches.filter(m=>m.result==='W').length;
+    const l=matches.filter(m=>m.result==='L').length;
+    const t=matches.filter(m=>m.result==='T').length;
+    const tot=matches.length;
+    document.getElementById('stat-wins').textContent=w;
+    document.getElementById('stat-losses').textContent=l;
+    document.getElementById('stat-ties').textContent=t;
+    document.getElementById('stat-total').textContent=tot;
+    document.getElementById('stat-winrate').textContent=tot?Math.round(w/tot*100)+'%':'—';
+    const mu={};
+    matches.forEach(m=>{ if(!mu[m.opponent])mu[m.opponent]={W:0,L:0,T:0}; mu[m.opponent][m.result]++; });
+    const el=document.getElementById('matchup-stats');
+    const entries=Object.entries(mu).sort((a,b)=>(b[1].W+b[1].L+b[1].T)-(a[1].W+a[1].L+a[1].T));
+    if(!entries.length){el.innerHTML='<div class="empty-state">// SIN DATOS //</div>';return;}
+    el.innerHTML=entries.map(([name,r])=>{
+        const tot2=r.W+r.L+r.T; const wr=Math.round(r.W/tot2*100);
+        const cls=wr>=60?'mu-high':wr>=40?'mu-mid':'mu-low';
+        return `<div class="matchup-item"><span class="matchup-name">${name}</span><div class="matchup-record"><span class="mu-w">${r.W}W</span><span class="mu-l">${r.L}L</span><span class="mu-t">${r.T}T</span><span class="mu-pct ${cls}">${wr}%</span></div></div>`;
+    }).join('');
+}
+
+function renderDeckList() {
+    ['pokemon','trainer','energy'].forEach(type=>{
+        document.getElementById('deck-'+type).innerHTML = DECK[type].map(c=>`
+            <div class="deck-card-item ${c.acespec?'ace-spec':''}">
+                <div>
+                    <div class="card-name">${c.es}${c.acespec?' ★':''}</div>
+                    <div class="card-en">${c.en}${c.code?' · '+c.code:''}</div>
+                </div>
+                <div class="card-qty">×${c.qty}</div>
+            </div>`).join('');
+    });
+}
+
+let timerSecs=3000, timerInt=null;
+function updateTimerDisplay(){
+    const m=Math.floor(timerSecs/60).toString().padStart(2,'0');
+    const s=(timerSecs%60).toString().padStart(2,'0');
+    const el=document.getElementById('timer-display');
+    el.textContent=`${m}:${s}`;
+    el.style.color=timerSecs<=120?'#ff4444':timerSecs<=300?'#f0b800':'var(--red)';
+}
+function startTimer(){if(timerInt)return;timerInt=setInterval(()=>{if(timerSecs<=0){clearInterval(timerInt);timerInt=null;return;}timerSecs--;updateTimerDisplay();},1000);}
+function pauseTimer(){clearInterval(timerInt);timerInt=null;}
+function resetTimer(){pauseTimer();timerSecs=3000;updateTimerDisplay();}
+
+function animateCoin(){
+    openModal('coin-modal');
+    document.getElementById('coin-result').textContent='';
+    const coin=document.getElementById('coin-el');
+    const heads=Math.random()<0.5;
+    coin.style.transform=`rotateY(${(6+Math.floor(Math.random()*4))*360+(heads?0:180)}deg)`;
+    setTimeout(()=>{document.getElementById('coin-result').textContent=heads?'⚡  CARA':'💀  CRUZ';},2100);
+}
+
+const DICE_T={1:'rotateX(0deg) rotateY(0deg)',2:'rotateX(0deg) rotateY(-90deg)',3:'rotateX(-90deg) rotateY(0deg)',4:'rotateX(90deg) rotateY(0deg)',5:'rotateX(0deg) rotateY(90deg)',6:'rotateX(180deg) rotateY(0deg)'};
+function animateDice(){
+    openModal('dice-modal');
+    document.getElementById('dice-result').textContent='';
+    const dice=document.getElementById('dice-el');
+    const result=Math.floor(Math.random()*6)+1;
+    dice.style.transition='transform 1.5s cubic-bezier(0.2,0.8,0.2,1)';
+    dice.style.transform=`rotateX(${360*4+Math.random()*90}deg) rotateY(${360*4+Math.random()*90}deg)`;
+    setTimeout(()=>{dice.style.transition='transform 0.5s ease';dice.style.transform=DICE_T[result];document.getElementById('dice-result').textContent=`RESULTADO: ${result}`;},1500);
+}
+
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){
+    document.getElementById(id).classList.remove('open');
+    if(id==='coin-modal'){document.getElementById('coin-el').style.transform='';document.getElementById('coin-result').textContent='';}
+    if(id==='dice-modal'){document.getElementById('dice-el').style.transform='';document.getElementById('dice-result').textContent='';}
+}
+document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)closeModal(m.id);}));
+
+init();
+</script>
+</body>
+</html>
+
