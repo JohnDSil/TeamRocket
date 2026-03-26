@@ -25,7 +25,6 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 .bg-vig{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 35%,rgba(0,0,0,.75) 100%)}
 .bg-glow{position:absolute;top:-240px;left:50%;transform:translateX(-50%);width:1000px;height:480px;background:radial-gradient(ellipse,rgba(232,0,13,.11) 0%,transparent 70%);border-radius:50%}
 
-/* HEADER */
 header{position:sticky;top:0;z-index:100;background:linear-gradient(180deg,#08080f 0%,rgba(5,5,10,.97) 100%);border-bottom:1px solid var(--red-d)}
 header::before{content:'';position:absolute;bottom:-2px;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent 0%,var(--red) 25%,var(--red) 75%,transparent 100%);box-shadow:0 0 24px var(--red-g),0 0 60px var(--red-g)}
 .hi{max-width:1400px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:74px;gap:12px;flex-wrap:wrap}
@@ -53,16 +52,14 @@ header::before{content:'';position:absolute;bottom:-2px;left:0;right:0;height:2p
 .tbtn2:hover{border-color:var(--red);color:var(--red);box-shadow:0 0 8px var(--red-g)}
 .music-btn{font-size:1rem;padding:6px 10px}
 
-/* PAGES */
 .page{display:none}.page.active{display:block}
 main{max-width:1400px;margin:0 auto;padding:24px;position:relative;z-index:1}
 
-/* TRACKER PAGE */
 .tracker-grid{display:grid;grid-template-columns:360px 1fr;gap:20px}
 @media(max-width:980px){.tracker-grid{grid-template-columns:1fr}}
-body.tournament .tracker-grid .right-col,.body.tournament .deck-panel,.body.tournament .matchup-panel{display:none}
+body.tournament .tracker-grid .right-col{display:none}
+body.tournament .tracker-grid{grid-template-columns:1fr;max-width:580px;margin:0 auto}
 
-/* PANELS */
 .panel{background:var(--blk2);border:1px solid var(--gr);border-top:2px solid var(--red-d);padding:20px;position:relative;margin-bottom:16px;overflow:hidden}
 .panel::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--red) 30%,var(--red-m) 70%,transparent)}
 .panel::after{content:'';position:absolute;top:0;right:0;width:70px;height:70px;background:linear-gradient(225deg,rgba(232,0,13,.055) 0%,transparent 60%)}
@@ -72,7 +69,6 @@ body.tournament .tracker-grid .right-col,.body.tournament .deck-panel,.body.tour
 .ptitle::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--gr2),transparent);margin-left:6px}
 .op-badge{display:inline-flex;align-items:center;background:linear-gradient(90deg,rgba(232,0,13,.13),transparent);border:1px solid rgba(232,0,13,.28);border-left:3px solid var(--red);color:var(--red);font-family:'Share Tech Mono',monospace;font-size:.55rem;padding:4px 12px;letter-spacing:3px;margin-bottom:14px;text-transform:uppercase}
 
-/* FORMS */
 label.fl{display:block;font-size:.66rem;font-weight:700;letter-spacing:3px;color:var(--wh3);margin-bottom:5px;text-transform:uppercase}
 .search-wrap{position:relative}
 .search-wrap input{padding-right:32px}
@@ -178,10 +174,8 @@ select:focus,input[type="text"]:focus{border-color:var(--red);background:var(--b
 .kbd{background:var(--blk4);border:1px solid var(--gr2);padding:2px 6px;border-radius:2px;color:var(--wh3)}
 .tournament-banner{display:none;background:linear-gradient(90deg,rgba(232,0,13,.15),transparent);border:1px solid var(--red-d);border-left:4px solid var(--red);padding:9px 16px;margin-bottom:16px;font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:3px;color:var(--red);animation:pulseG 2s ease-in-out infinite}
 body.tournament .tournament-banner{display:block}
-body.tournament .tracker-grid .right-col{display:none}
-body.tournament .tracker-grid{grid-template-columns:1fr;max-width:580px;margin:0 auto}
 
-/* ══ MODALS ══ */
+/* MODALS */
 .modal-overlay{display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.92);backdrop-filter:blur(8px);align-items:center;justify-content:center}
 .modal-overlay.open{display:flex}
 .mbox{background:var(--blk2);border:1px solid var(--gr2);border-top:2px solid var(--red);padding:32px;min-width:300px;max-width:500px;width:90%;display:flex;flex-direction:column;align-items:center;gap:18px;box-shadow:0 0 80px rgba(232,0,13,.22);position:relative;overflow:hidden}
@@ -217,7 +211,7 @@ body.tournament .tracker-grid{grid-template-columns:1fr;max-width:580px;margin:0
 .roll-btn{background:linear-gradient(135deg,var(--red-d),var(--red));border:none;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:.95rem;letter-spacing:4px;padding:9px 26px;cursor:pointer;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:all .2s}
 .roll-btn:hover{box-shadow:0 0 20px var(--red-g)}.roll-btn:disabled{opacity:.4;cursor:not-allowed}
 
-/* ══ SWISS TOURNAMENT PAGE ══ */
+/* SWISS TOURNAMENT */
 .swiss-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
 .swiss-actions{display:flex;gap:8px;flex-wrap:wrap}
 .s-btn{font-family:'Bebas Neue',sans-serif;font-size:.95rem;letter-spacing:3px;padding:9px 18px;cursor:pointer;border:1px solid;transition:all .2s;background:var(--blk3);clip-path:polygon(7px 0%,100% 0%,calc(100% - 7px) 100%,0% 100%)}
@@ -235,17 +229,21 @@ body.tournament .tracker-grid{grid-template-columns:1fr;max-width:580px;margin:0
 .player-tag button{background:none;border:none;color:#444;cursor:pointer;font-size:.9rem;transition:color .2s}
 .player-tag button:hover{color:var(--red)}
 .round-grid{display:grid;gap:10px}
-.pairing-card{background:var(--blk3);border:1px solid var(--gr);border-left:3px solid var(--gr2);padding:12px 14px;display:flex;align-items:center;gap:10px;transition:border-color .2s}
+.pairing-card{background:var(--blk3);border:1px solid var(--gr);border-left:3px solid var(--gr2);padding:12px 14px;display:flex;align-items:center;gap:10px;transition:border-color .2s;flex-wrap:wrap}
 .pairing-card.bye{border-left-color:var(--gold)}
 .pairing-num{font-family:'Share Tech Mono',monospace;font-size:.7rem;color:var(--wh3);width:28px;flex-shrink:0;letter-spacing:1px}
-.pairing-players{flex:1;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.pairing-players{flex:1;display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-width:160px}
 .player-name{font-size:.95rem;font-weight:700;color:var(--wh);min-width:80px}
 .vs-badge{font-family:'Bebas Neue',sans-serif;font-size:.9rem;letter-spacing:2px;color:var(--wh3)}
-.result-pills{display:flex;gap:5px}
-.rpill{font-family:'Bebas Neue',sans-serif;font-size:.8rem;letter-spacing:2px;padding:4px 12px;cursor:pointer;border:1px solid;transition:all .18s;background:var(--blk4);clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%)}
-.rpill.win-pill{border-color:#2d7a2d;color:var(--grn)}.rpill.win-pill.selected,.rpill.win-pill:hover{background:#0d1f0d;box-shadow:0 0 12px var(--grn-g)}
-.rpill.loss-pill{border-color:var(--red-d);color:var(--red)}.rpill.loss-pill.selected,.rpill.loss-pill:hover{background:#180505;box-shadow:0 0 12px var(--red-g)}
-.rpill.tie-pill{border-color:#3a3a4a;color:#777}.rpill.tie-pill.selected,.rpill.tie-pill:hover{background:#18181f}
+.result-pills{display:flex;gap:5px;flex-wrap:wrap}
+/* FIX: result pills use data attributes for click handling, no inline onclick with string escaping issues */
+.rpill{font-family:'Bebas Neue',sans-serif;font-size:.8rem;letter-spacing:2px;padding:4px 12px;cursor:pointer;border:1px solid;transition:all .18s;background:var(--blk4);clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%);user-select:none}
+.rpill.win-pill{border-color:#2d7a2d;color:var(--grn)}.rpill.win-pill.selected{background:#0d1f0d;box-shadow:0 0 12px var(--grn-g);border-color:var(--grn)}
+.rpill.win-pill:hover:not(.selected){background:#0a1a0a}
+.rpill.loss-pill{border-color:var(--red-d);color:var(--red)}.rpill.loss-pill.selected{background:#180505;box-shadow:0 0 12px var(--red-g);border-color:var(--red)}
+.rpill.loss-pill:hover:not(.selected){background:#140303}
+.rpill.tie-pill{border-color:#3a3a4a;color:#777}.rpill.tie-pill.selected{background:#18181f;border-color:#666}
+.rpill.tie-pill:hover:not(.selected){background:#141418}
 .bye-tag{font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:2px;color:var(--gold);padding:4px 10px;border:1px solid rgba(200,150,12,.3);background:rgba(200,150,12,.08)}
 .standings-table{width:100%;border-collapse:collapse}
 .standings-table th{font-family:'Share Tech Mono',monospace;font-size:.6rem;letter-spacing:2px;color:var(--wh3);text-align:left;padding:6px 10px;border-bottom:1px solid var(--gr2);text-transform:uppercase}
@@ -263,7 +261,7 @@ body.tournament .tracker-grid{grid-template-columns:1fr;max-width:580px;margin:0
 .pairing-card.done{border-left-color:var(--grn)}
 
 /* music indicator */
-.music-indicator{position:fixed;bottom:24px;right:24px;z-index:400;display:flex;align-items:center;gap:8px;background:var(--blk3);border:1px solid var(--gr2);border-left:3px solid var(--red);padding:8px 14px;font-family:'Share Tech Mono',monospace;font-size:.6rem;letter-spacing:2px;color:var(--wh3);opacity:0;transition:opacity .5s;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%)}
+.music-indicator{position:fixed;bottom:24px;right:24px;z-index:400;display:flex;align-items:center;gap:8px;background:var(--blk3);border:1px solid var(--gr2);border-left:3px solid var(--red);padding:8px 14px;font-family:'Share Tech Mono',monospace;font-size:.6rem;letter-spacing:2px;color:var(--wh3);opacity:0;transition:opacity .5s;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);pointer-events:none}
 .music-indicator.show{opacity:1}
 .music-bars{display:flex;gap:2px;align-items:flex-end;height:14px}
 .music-bar{width:3px;background:var(--red);border-radius:1px;animation:musicBar 1s ease-in-out infinite}
@@ -278,7 +276,6 @@ body.tournament .tracker-grid{grid-template-columns:1fr;max-width:580px;margin:0
 <div class="toast" id="toast"></div>
 <div class="music-indicator" id="music-ind"><div class="music-bars"><div class="music-bar"></div><div class="music-bar"></div><div class="music-bar"></div><div class="music-bar"></div></div><span>BGM ACTIVA</span></div>
 
-<!-- HEADER -->
 <header>
   <div class="hi">
     <div class="logo-area">
@@ -376,12 +373,10 @@ body.tournament .tracker-grid{grid-template-columns:1fr;max-width:580px;margin:0
 </div>
 
 <main>
-  <!-- PAGE: TRACKER -->
   <div class="page active" id="page-tracker">
     <div class="tracker-grid">
       <div class="left-col">
         <div class="tournament-banner">■ MODO TORNEO — VISTA SIMPLIFICADA ■</div>
-        <!-- NUEVA PARTIDA -->
         <div class="panel">
           <div class="pcorner"></div>
           <div class="op-badge">■ OPERACIÓN: REGISTRAR MISIÓN ■</div>
@@ -425,7 +420,6 @@ body.tournament .tracker-grid{grid-template-columns:1fr;max-width:580px;margin:0
             <span><span class="kbd">1</span>/<span class="kbd">2</span> Turno</span>
           </div>
         </div>
-        <!-- STATS -->
         <div class="panel">
           <div class="pcorner"></div>
           <div class="ptitle">Estadísticas</div>
@@ -443,7 +437,6 @@ body.tournament .tracker-grid{grid-template-columns:1fr;max-width:580px;margin:0
           <div class="streak-label" style="margin-top:9px">ÚLTIMAS 10 PARTIDAS</div>
           <div class="streak-row" id="streak-row"></div>
         </div>
-        <!-- MATCHUPS -->
         <div class="panel matchup-panel">
           <div class="pcorner"></div>
           <div class="ptitle">Matchups</div>
@@ -456,7 +449,6 @@ body.tournament .tracker-grid{grid-template-columns:1fr;max-width:580px;margin:0
         </div>
       </div>
       <div class="right-col">
-        <!-- HISTORIAL -->
         <div class="panel">
           <div class="pcorner"></div>
           <div class="shr">
@@ -472,7 +464,6 @@ body.tournament .tracker-grid{grid-template-columns:1fr;max-width:580px;margin:0
           <div class="divider"></div>
           <div class="hscroll" id="match-history"><div class="empty">// NINGUNA MISIÓN REGISTRADA //</div></div>
         </div>
-        <!-- DECK LIST -->
         <div class="panel deck-panel">
           <div class="pcorner"></div>
           <div class="ptitle">Lista del Mazo &nbsp;<span class="cbadge">60 cartas</span></div>
@@ -486,7 +477,6 @@ body.tournament .tracker-grid{grid-template-columns:1fr;max-width:580px;margin:0
     </div>
   </div>
 
-  <!-- PAGE: SWISS TOURNAMENT -->
   <div class="page" id="page-swiss">
     <div class="panel" style="margin-bottom:0">
       <div class="pcorner"></div>
@@ -745,27 +735,23 @@ function pauseTimer(){clearInterval(timerInt);timerInt=null}
 function resetTimer(){pauseTimer();timerSecs=3000;updateTimer()}
 
 /* ══════════════════════════════════════════
-   COIN — FIXED
+   COIN
 ══════════════════════════════════════════ */
 let coinFlipping=false,coinRotX=0,coinRotY=0;
-
 function openCoin(){
   openModal('coin-modal');
   document.getElementById('coin-result').textContent='Pulsa para lanzar';
   document.getElementById('flip-btn').disabled=false;
-  // reset visual
   coinRotX=0;coinRotY=0;
-  document.getElementById('coin-el').style.transform=`rotateX(0deg) rotateY(0deg)`;
+  document.getElementById('coin-el').style.transform='rotateX(0deg) rotateY(0deg)';
 }
-
 function flipCoin(){
   if(coinFlipping)return;
   coinFlipping=true;
   document.getElementById('flip-btn').disabled=true;
   document.getElementById('coin-result').textContent='...';
   const heads=Math.random()<.5;
-  // Add many full rotations + land on heads(0) or tails(180)
-  const spins=1440+Math.floor(Math.random()*720); // 4-6 full rotations in Y
+  const spins=1440+Math.floor(Math.random()*720);
   const finalY=coinRotY+spins+(heads?0:180);
   coinRotY=finalY;
   const coin=document.getElementById('coin-el');
@@ -779,19 +765,10 @@ function flipCoin(){
 }
 
 /* ══════════════════════════════════════════
-   DICE — FIXED
+   DICE
 ══════════════════════════════════════════ */
-// Face orientations: which rotateX/rotateY shows each face number on top
-const DICE_FACES={
-  1:{rx:0,  ry:0  },
-  2:{rx:0,  ry:90 },
-  3:{rx:-90,ry:0  },
-  4:{rx:90, ry:0  },
-  5:{rx:0,  ry:-90},
-  6:{rx:180,ry:0  }
-};
+const DICE_FACES={1:{rx:0,ry:0},2:{rx:0,ry:90},3:{rx:-90,ry:0},4:{rx:90,ry:0},5:{rx:0,ry:-90},6:{rx:180,ry:0}};
 let diceRolling=false,diceBaseRx=0,diceBaseRy=0;
-
 function openDice(){
   openModal('dice-modal');
   document.getElementById('dice-result').textContent='Pulsa para lanzar';
@@ -800,7 +777,6 @@ function openDice(){
   document.getElementById('dice-el').style.transition='none';
   document.getElementById('dice-el').style.transform='rotateX(0deg) rotateY(0deg)';
 }
-
 function rollDice(){
   if(diceRolling)return;
   diceRolling=true;
@@ -808,7 +784,6 @@ function rollDice(){
   document.getElementById('dice-result').textContent='...';
   const result=Math.floor(Math.random()*6)+1;
   const face=DICE_FACES[result];
-  // tumble: add many full rotations then land on target face
   const tumbleX=diceBaseRx+1080+face.rx;
   const tumbleY=diceBaseRy+1080+face.ry;
   diceBaseRx=tumbleX;diceBaseRy=tumbleY;
@@ -843,137 +818,178 @@ function closeModal(id){document.getElementById(id).classList.remove('open')}
 document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)closeModal(m.id)}));
 
 /* ══════════════════════════════════════════
-   MUSIC — Team Rocket BGM (Web Audio)
+   MÚSICA — Team Rocket BGM
+   FIX: AudioContext creado al primer click del usuario
+        Loop gestionado con referencia limpia, sin mezclar
+        setTimeout IDs con nodos de Audio Web
 ══════════════════════════════════════════ */
-let musicCtx=null,musicPlaying=false,musicNodes=[];
+let musicCtx=null;
+let musicPlaying=false;
+let musicAudioNodes=[];   // solo AudioNode reales
+let musicLoopTimer=null;  // solo el setTimeout del loop
 
-// Team Rocket leitmotif — sinister march in minor
 const BGM_NOTES=[
-  // bar 1 - dramatic opening
   {f:196,d:.25,t:0},{f:196,d:.25,t:.25},{f:233,d:.5,t:.5},
   {f:220,d:.25,t:1},{f:196,d:.25,t:1.25},{f:185,d:.5,t:1.5},
-  // bar 2
   {f:175,d:.25,t:2},{f:175,d:.25,t:2.25},{f:208,d:.5,t:2.5},
   {f:196,d:.25,t:3},{f:175,d:.25,t:3.25},{f:165,d:.5,t:3.5},
-  // bar 3 - tension rise
   {f:147,d:.25,t:4},{f:156,d:.25,t:4.25},{f:165,d:.25,t:4.5},{f:175,d:.25,t:4.75},
   {f:185,d:.5,t:5},{f:196,d:.5,t:5.5},
-  // bar 4
   {f:208,d:.25,t:6},{f:220,d:.25,t:6.25},{f:233,d:.5,t:6.5},
   {f:247,d:1,t:7},
-  // bar 5 - villain theme
   {f:233,d:.33,t:8},{f:196,d:.33,t:8.33},{f:175,d:.34,t:8.66},
   {f:165,d:.5,t:9},{f:175,d:.5,t:9.5},
-  // bar 6
   {f:185,d:.33,t:10},{f:175,d:.33,t:10.33},{f:165,d:.34,t:10.66},
   {f:156,d:1,t:11},
-  // bar 7 - march
   {f:131,d:.25,t:12},{f:131,d:.25,t:12.25},{f:131,d:.25,t:12.5},{f:131,d:.25,t:12.75},
   {f:147,d:.25,t:13},{f:147,d:.25,t:13.25},{f:156,d:.5,t:13.5},
-  // bar 8 - resolution back to start
   {f:165,d:.5,t:14},{f:175,d:.5,t:14.5},{f:185,d:.5,t:15},{f:196,d:.5,t:15.5},
 ];
-const BGM_TOTAL=16; // seconds, then loop
-
-// Bass line
 const BGM_BASS=[
   {f:98,d:.5,t:0},{f:98,d:.5,t:1},{f:87,d:.5,t:2},{f:87,d:.5,t:3},
   {f:82,d:.5,t:4},{f:87,d:.5,t:5},{f:98,d:.5,t:6},{f:110,d:.5,t:7},
   {f:116,d:.5,t:8},{f:87,d:.5,t:9},{f:92,d:.5,t:10},{f:82,d:.5,t:11},
   {f:65,d:.5,t:12},{f:73,d:.5,t:13},{f:82,d:.5,t:14},{f:98,d:.5,t:15},
 ];
+const BGM_TOTAL=16;
 
-function startMusic(){
-  try{
-    if(!musicCtx)musicCtx=new(window.AudioContext||window.webkitAudioContext)();
-    if(musicCtx.state==='suspended')musicCtx.resume();
-    stopMusicNodes();
-    scheduleMusicLoop(musicCtx.currentTime);
-    musicPlaying=true;
-    document.getElementById('music-btn').classList.add('active-btn');
-    const ind=document.getElementById('music-ind');ind.classList.add('show');
-  }catch(e){console.log('BGM error',e)}
+function getMusicCtx(){
+  if(!musicCtx){
+    musicCtx=new(window.AudioContext||window.webkitAudioContext)();
+  }
+  return musicCtx;
+}
+
+function stopAllMusicAudio(){
+  // Para todos los nodos de audio activos
+  musicAudioNodes.forEach(n=>{
+    try{n.stop(0)}catch(e){}
+    try{n.disconnect()}catch(e){}
+  });
+  musicAudioNodes=[];
+  // Cancela el timer del loop
+  if(musicLoopTimer!==null){clearTimeout(musicLoopTimer);musicLoopTimer=null;}
 }
 
 function scheduleMusicLoop(startAt){
-  if(!musicPlaying)return;
-  const ctx=musicCtx;
-  const masterGain=ctx.createGain();masterGain.gain.value=0.12;masterGain.connect(ctx.destination);
-  musicNodes.push(masterGain);
+  if(!musicPlaying) return;
+  const ctx=getMusicCtx();
 
-  // Lead melody — square-ish
+  const masterGain=ctx.createGain();
+  masterGain.gain.value=0.12;
+  masterGain.connect(ctx.destination);
+  musicAudioNodes.push(masterGain);
+
+  // Melodía principal — onda cuadrada
   BGM_NOTES.forEach(n=>{
-    const osc=ctx.createOscillator();const g=ctx.createGain();
-    osc.type='square';osc.frequency.value=n.f;
+    const osc=ctx.createOscillator();
+    const g=ctx.createGain();
+    osc.type='square';
+    osc.frequency.value=n.f;
     g.gain.setValueAtTime(0,startAt+n.t);
     g.gain.linearRampToValueAtTime(0.6,startAt+n.t+0.02);
     g.gain.setValueAtTime(0.6,startAt+n.t+n.d*0.7);
     g.gain.linearRampToValueAtTime(0,startAt+n.t+n.d);
-    osc.connect(g);g.connect(masterGain);
-    osc.start(startAt+n.t);osc.stop(startAt+n.t+n.d+0.05);
-    musicNodes.push(osc,g);
+    osc.connect(g);
+    g.connect(masterGain);
+    osc.start(startAt+n.t);
+    osc.stop(startAt+n.t+n.d+0.05);
+    musicAudioNodes.push(osc,g);
   });
 
-  // Bass — sawtooth
+  // Bajo — diente de sierra
   BGM_BASS.forEach(n=>{
-    const osc=ctx.createOscillator();const g=ctx.createGain();
-    osc.type='sawtooth';osc.frequency.value=n.f;
+    const osc=ctx.createOscillator();
+    const g=ctx.createGain();
+    osc.type='sawtooth';
+    osc.frequency.value=n.f;
     g.gain.setValueAtTime(0,startAt+n.t);
     g.gain.linearRampToValueAtTime(0.4,startAt+n.t+0.05);
     g.gain.setValueAtTime(0.4,startAt+n.t+n.d*0.6);
     g.gain.linearRampToValueAtTime(0,startAt+n.t+n.d);
-    osc.connect(g);g.connect(masterGain);
-    osc.start(startAt+n.t);osc.stop(startAt+n.t+n.d+0.05);
-    musicNodes.push(osc,g);
+    osc.connect(g);
+    g.connect(masterGain);
+    osc.start(startAt+n.t);
+    osc.stop(startAt+n.t+n.d+0.05);
+    musicAudioNodes.push(osc,g);
   });
 
-  // Sinister percussion — noise bursts every beat
+  // Percusión — ruido blanco filtrado en cada beat
   for(let i=0;i<16;i++){
-    const buf=ctx.createBuffer(1,ctx.sampleRate*.06,ctx.sampleRate);
-    const d=buf.getChannelData(0);for(let j=0;j<d.length;j++)d[j]=(Math.random()*2-1);
-    const src=ctx.createBufferSource();src.buffer=buf;
-    const g=ctx.createGain();const filt=ctx.createBiquadFilter();
-    filt.type='bandpass';filt.frequency.value=200;filt.Q.value=0.5;
-    g.gain.setValueAtTime(0.15,startAt+i*.5);
-    g.gain.exponentialRampToValueAtTime(.001,startAt+i*.5+.06);
-    src.connect(filt);filt.connect(g);g.connect(masterGain);
-    src.start(startAt+i*.5);
-    musicNodes.push(src,g,filt);
+    const buf=ctx.createBuffer(1,Math.ceil(ctx.sampleRate*0.06),ctx.sampleRate);
+    const d=buf.getChannelData(0);
+    for(let j=0;j<d.length;j++) d[j]=(Math.random()*2-1);
+    const src=ctx.createBufferSource();
+    src.buffer=buf;
+    const g=ctx.createGain();
+    const filt=ctx.createBiquadFilter();
+    filt.type='bandpass';
+    filt.frequency.value=200;
+    filt.Q.value=0.5;
+    g.gain.setValueAtTime(0.15,startAt+i*0.5);
+    g.gain.exponentialRampToValueAtTime(0.001,startAt+i*0.5+0.06);
+    src.connect(filt);
+    filt.connect(g);
+    g.connect(masterGain);
+    src.start(startAt+i*0.5);
+    musicAudioNodes.push(src,g,filt);
   }
 
-  // Schedule next loop
-  const loopTimer=setTimeout(()=>{
-    if(musicPlaying)scheduleMusicLoop(startAt+BGM_TOTAL);
-  },(BGM_TOTAL-1)*1000);
-  musicNodes.push({stop:()=>clearTimeout(loopTimer)});
+  // Programa el siguiente loop
+  const msUntilLoop=(BGM_TOTAL-0.5)*1000;
+  musicLoopTimer=setTimeout(()=>{
+    musicLoopTimer=null;
+    if(musicPlaying){
+      scheduleMusicLoop(startAt+BGM_TOTAL);
+    }
+  }, msUntilLoop);
 }
 
-function stopMusicNodes(){
-  musicNodes.forEach(n=>{try{if(n.stop)n.stop();if(n.disconnect)n.disconnect()}catch(e){}});
-  musicNodes=[];
+function startMusic(){
+  try{
+    stopAllMusicAudio();
+    const ctx=getMusicCtx();
+    // El AudioContext puede estar suspendido si no ha habido interacción previa
+    const doStart=()=>{
+      musicPlaying=true;
+      document.getElementById('music-btn').classList.add('active-btn');
+      document.getElementById('music-ind').classList.add('show');
+      scheduleMusicLoop(ctx.currentTime+0.05);
+    };
+    if(ctx.state==='suspended'){
+      ctx.resume().then(doStart);
+    } else {
+      doStart();
+    }
+  }catch(e){console.warn('BGM error',e)}
 }
 
 function stopMusic(){
   musicPlaying=false;
-  stopMusicNodes();
+  stopAllMusicAudio();
   document.getElementById('music-btn').classList.remove('active-btn');
-  const ind=document.getElementById('music-ind');ind.classList.remove('show');
+  document.getElementById('music-ind').classList.remove('show');
 }
 
 function toggleMusic(){
-  if(musicPlaying)stopMusic();
+  if(musicPlaying) stopMusic();
   else startMusic();
 }
 
 /* ══════════════════════════════════════════
    SWISS TOURNAMENT
+   FIX PRINCIPAL: Los botones de resultado usan
+   event delegation con data-attributes en lugar
+   de onclick strings con índices que se corrompían
+   al re-renderizar el innerHTML.
 ══════════════════════════════════════════ */
 let swiss={
-  state:'setup',  // setup | active | done
+  state:'setup',
   players:[],
   rounds:[],
   currentRound:0,
   totalRounds:0,
+  ptsSystem:'3-1-0',
 };
 
 function swissSave(){localStorage.setItem('tr-swiss',JSON.stringify(swiss))}
@@ -983,13 +999,24 @@ function swissLoad(){
 }
 swissLoad();
 
+// ─── Event delegation para los botones de resultado del torneo ───
+// Usando un listener en el contenedor principal, evitamos que inline
+// onclick con índices queden desincronizados tras re-renders.
+document.addEventListener('click',function(e){
+  const pill=e.target.closest('.rpill[data-pair-idx]');
+  if(pill){
+    const idx=parseInt(pill.dataset.pairIdx,10);
+    const val=pill.dataset.result;
+    swissSetResult(idx,val);
+  }
+});
+
 function swissRenderPage(){
   const actions=document.getElementById('swiss-actions');
   const content=document.getElementById('swiss-content');
   if(swiss.state==='setup'){
     actions.innerHTML=`<button class="s-btn sec" onclick="swissReset()">⊗ Reiniciar</button>`;
     content.innerHTML=swissSetupHTML();
-    // reattach player list
     swissRenderPlayerList();
   } else if(swiss.state==='active'){
     actions.innerHTML=`
@@ -1080,7 +1107,6 @@ function swissStart(){
   swiss.ptsSystem=document.getElementById('swiss-pts').value;
   swiss.currentRound=1;
   swiss.rounds=[];
-  // Init records
   swiss.players=swiss.players.map(p=>({...p,pts:0,wins:0,losses:0,ties:0,opponents:[],hadBye:false}));
   swiss.state='active';
   swiss.rounds.push(swissPairRound());
@@ -1089,18 +1115,15 @@ function swissStart(){
 }
 
 function swissPairRound(){
-  // Sort by points desc, shuffle within same-point groups
   const players=[...swiss.players].sort((a,b)=>b.pts-a.pts||(Math.random()-.5));
   const paired=new Set();const pairings=[];
   for(let i=0;i<players.length;i++){
     if(paired.has(players[i].id))continue;
-    // Find best opponent not yet paired and not a previous opponent
     let opp=null;
     for(let j=i+1;j<players.length;j++){
       if(paired.has(players[j].id))continue;
       if(!players[i].opponents.includes(players[j].id)){opp=players[j];break}
     }
-    // fallback: allow rematch
     if(!opp){
       for(let j=i+1;j<players.length;j++){
         if(!paired.has(players[j].id)){opp=players[j];break}
@@ -1110,7 +1133,6 @@ function swissPairRound(){
       paired.add(players[i].id);paired.add(opp.id);
       pairings.push({p1:players[i].id,p2:opp.id,result:null});
     } else {
-      // Bye
       pairings.push({p1:players[i].id,p2:'bye',result:'bye'});
       paired.add(players[i].id);
     }
@@ -1121,8 +1143,6 @@ function swissPairRound(){
 function swissRenderRound(){
   const content=document.getElementById('swiss-content');
   const rd=swiss.rounds[swiss.currentRound-1];
-  const pts=swiss.ptsSystem.split('-').map(Number);
-  const getPts=(r,side)=>r==='bye'?pts[0]:r===null?0:r===side?pts[0]:r==='tie'?pts[1]:pts[2];
 
   const infoBar=`<div class="swiss-info-bar">
     <div class="sinfo">RONDA<span>${swiss.currentRound} / ${swiss.totalRounds}</span></div>
@@ -1130,14 +1150,17 @@ function swissRenderRound(){
     <div class="sinfo">PUNTOS<span>${swiss.ptsSystem}</span></div>
   </div>`;
 
+  // FIX: Los botones usan data-pair-idx y data-result en lugar de onclick con índice
+  // El event listener delegado en document los captura correctamente.
   const pairingCards=rd.pairings.map((pair,idx)=>{
     const p1=swiss.players.find(p=>p.id===pair.p1);
     const isBye=pair.p2==='bye';
     const p2=isBye?null:swiss.players.find(p=>p.id===pair.p2);
     const done=pair.result!==null;
+    const res=pair.result;
 
     if(isBye){
-      return`<div class="pairing-card bye ${done?'done':''}">
+      return`<div class="pairing-card bye done">
         <div class="pairing-num">#${idx+1}</div>
         <div class="pairing-players">
           <span class="player-name">${p1?p1.name:'?'}</span>
@@ -1146,7 +1169,9 @@ function swissRenderRound(){
       </div>`;
     }
 
-    const res=pair.result;
+    const p1short=p1?p1.name.split(' ')[0]:'J1';
+    const p2short=p2?p2.name.split(' ')[0]:'J2';
+
     return`<div class="pairing-card ${done?'done':''}">
       <div class="pairing-num">#${idx+1}</div>
       <div class="pairing-players">
@@ -1155,34 +1180,59 @@ function swissRenderRound(){
         <span class="player-name">${p2?p2.name:'?'}</span>
       </div>
       <div class="result-pills">
-        <button class="rpill win-pill ${res==='p1'?'selected':''}" onclick="swissSetResult(${idx},'p1')">Gana ${p1?p1.name.split(' ')[0]:'J1'}</button>
-        <button class="rpill tie-pill ${res==='tie'?'selected':''}" onclick="swissSetResult(${idx},'tie')">Empate</button>
-        <button class="rpill win-pill ${res==='p2'?'selected':''}" onclick="swissSetResult(${idx},'p2')">Gana ${p2?p2.name.split(' ')[0]:'J2'}</button>
+        <button class="rpill win-pill ${res==='p1'?'selected':''}"
+          data-pair-idx="${idx}" data-result="p1">
+          Gana ${p1short}
+        </button>
+        <button class="rpill tie-pill ${res==='tie'?'selected':''}"
+          data-pair-idx="${idx}" data-result="tie">
+          Empate
+        </button>
+        <button class="rpill win-pill ${res==='p2'?'selected':''}"
+          data-pair-idx="${idx}" data-result="p2">
+          Gana ${p2short}
+        </button>
       </div>
     </div>`;
   }).join('');
 
-  // Mini standings
   const standingsHTML=swissMiniStandings();
 
-  content.innerHTML=infoBar+`<div class="swiss-grid" style="gap:16px"><div><div class="ptitle" style="font-size:1rem;margin-bottom:12px">Emparejamientos</div><div class="round-grid">${pairingCards}</div></div><div>${standingsHTML}</div></div>`;
+  content.innerHTML=infoBar+`<div class="swiss-grid" style="gap:16px">
+    <div>
+      <div class="ptitle" style="font-size:1rem;margin-bottom:12px">Emparejamientos — Ronda ${swiss.currentRound}</div>
+      <div class="round-grid">${pairingCards}</div>
+    </div>
+    <div>${standingsHTML}</div>
+  </div>`;
 }
 
-function swissSetResult(pairingIdx,result){
+// FIX: swissSetResult ahora es llamado por el event delegation, no por onclick inline
+function swissSetResult(pairingIdx, result){
   const rd=swiss.rounds[swiss.currentRound-1];
+  if(!rd) return;
   const pair=rd.pairings[pairingIdx];
-  if(pair.result===result){pair.result=null} // toggle off
-  else{pair.result=result}
-  swissSave();swissRenderRound();
+  if(!pair) return;
+  // Toggle: si ya tiene ese resultado, lo quita; si no, lo pone
+  if(pair.result===result){
+    pair.result=null;
+  } else {
+    pair.result=result;
+  }
+  swissSave();
+  swissRenderRound();
+  // Muestra cuántos faltan
+  const pending=rd.pairings.filter(p=>p.result===null).length;
+  if(pending===0){
+    showToast('Todos los resultados registrados ✓','win');
+  }
 }
 
 function swissNextRound(){
   const rd=swiss.rounds[swiss.currentRound-1];
-  // Check all results set
   const incomplete=rd.pairings.filter(p=>p.result===null);
   if(incomplete.length>0){showToast('Faltan '+incomplete.length+' resultado(s)','loss');return}
 
-  // Apply results
   const pts=swiss.ptsSystem.split('-').map(Number);
   rd.pairings.forEach(pair=>{
     if(pair.p2==='bye'){
@@ -1210,7 +1260,6 @@ function swissNextRound(){
 }
 
 function swissShowStandings(){
-  // Replace content with full standings
   const content=document.getElementById('swiss-content');
   const standingsHTML=swissFullStandings(`Clasificación tras Ronda ${swiss.currentRound}`);
   content.innerHTML=`<button class="s-btn sec" onclick="swissRenderRound()" style="margin-bottom:14px">← Volver a Emparejamientos</button>${standingsHTML}`;
@@ -1260,7 +1309,7 @@ function swissRenderFinal(){
 
 function swissReset(){
   if(!confirm('¿Reiniciar el torneo? Se perderán todos los datos.'))return;
-  swiss={state:'setup',players:[],rounds:[],currentRound:0,totalRounds:0};
+  swiss={state:'setup',players:[],rounds:[],currentRound:0,totalRounds:0,ptsSystem:'3-1-0'};
   swissSave();swissRenderPage();showToast('Torneo reiniciado','tie');
 }
 
